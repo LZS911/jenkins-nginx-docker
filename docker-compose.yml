@@ -1,6 +1,8 @@
 version: "3.9"
 services:                                      # 集合
   docker_jenkins:
+    environment:
+      - TZ=Asia/Shanghai
     user: root                                 # 为了避免一些权限问题 在这我使用了root
     restart: always                            # 重启方式
     image: jenkins/jenkins:lts                 # 指定服务所使用的镜像 在这里我选择了 LTS (长期支持)
@@ -14,6 +16,8 @@ services:                                      # 集合
       - /usr/bin/docker:/usr/bin/docker                # 这是为了我们可以在容器内使用docker命令
       - /usr/bin/docker-compose:/usr/local/bin/docker-compose
   docker_nginx:
+    environment:
+      - TZ=Asia/Shanghai
     restart: always
     image: nginx:stable-alpine                 # 下载稳定版nginx
     container_name: cicd-nginx
@@ -22,3 +26,13 @@ services:                                      # 集合
     volumes:
       - ./nginx/:/etc/nginx/conf.d/   # 服务器文件：容器内文件(复制外部配置文件到容器内，“：”是间隔符，左边是外部，右边是容器内)
       - ./webserver/static/jenkins/dist/:/usr/share/nginx/html/  # 同上
+    networks:
+       bp-network:
+        ipv4_address: 172.25.0.2  
+networks:
+  bp-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+ 
