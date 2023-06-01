@@ -14,7 +14,7 @@ services:                                      # 集合
       - ./jenkins/jenkins_home/:/var/jenkins_home  # 服务器的jenkins_home环境地址:容器内环境地址(复制内容到容器内，“：”是间隔符，左边是外部，右边是容器内)
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker                # 这是为了我们可以在容器内使用docker命令
-      - /usr/bin/docker-compose:/usr/local/bin/docker-compose
+      - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose
   docker_nginx:
     environment:
       - TZ=Asia/Shanghai
@@ -26,13 +26,3 @@ services:                                      # 集合
     volumes:
       - ./nginx/:/etc/nginx/conf.d/   # 服务器文件：容器内文件(复制外部配置文件到容器内，“：”是间隔符，左边是外部，右边是容器内)
       - ./webserver/static/jenkins/dist/:/usr/share/nginx/html/  # 同上
-    networks:
-       bp-network:
-        ipv4_address: 172.25.0.2  
-networks:
-  bp-network:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.25.0.0/16
- 
