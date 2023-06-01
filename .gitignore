@@ -1,2 +1,2 @@
 jenkins/jenkins_home/**
-webserver/static/jenkins/dist
+webserver/static/jenkins/dist/*

@@ -1,28 +1,28 @@
 version: "3.9"
-services:                                      # 集合
+services:                                      
   docker_jenkins:
     environment:
       - TZ=Asia/Shanghai
-    user: root                                 # 为了避免一些权限问题 在这我使用了root
-    restart: always                            # 重启方式
-    image: jenkins/jenkins:lts                 # 指定服务所使用的镜像 在这里我选择了 LTS (长期支持)
-    container_name: cicd-jenkins                    # 容器名称
-    ports:                                     # 对外暴露的端口定义
-      - 8077:8080                              # 外部访问端口：容器端口
-      - 50000:50000                            # 外部访问端口：容器端口
-    volumes:                                   # 卷挂载路径
-      - ./jenkins/jenkins_home/:/var/jenkins_home  # 服务器的jenkins_home环境地址:容器内环境地址(复制内容到容器内，“：”是间隔符，左边是外部，右边是容器内)
+    user: root                                
+    restart: always                          
+    image: jenkins/jenkins:lts               
+    container_name: cicd-jenkins                
+    ports:                                   
+      - 8077:8080                             
+      - 50000:50000                          
+    volumes:                                
+      - ./jenkins/jenkins_home/:/var/jenkins_home 
       - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker                # 这是为了我们可以在容器内使用docker命令
+      - /usr/bin/docker:/usr/bin/docker            
       - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose
   docker_nginx:
     environment:
       - TZ=Asia/Shanghai
     restart: always
-    image: nginx:stable-alpine                 # 下载稳定版nginx
+    image: nginx:stable-alpine                
     container_name: cicd-nginx
     ports:
-      - 7070:80                                # 外部访问端口：容器内端端口
+      - 7070:80                             
     volumes:
-      - ./nginx/:/etc/nginx/conf.d/   # 服务器文件：容器内文件(复制外部配置文件到容器内，“：”是间隔符，左边是外部，右边是容器内)
-      - ./webserver/static/jenkins/dist/:/usr/share/nginx/html/  # 同上
+      - ./nginx/:/etc/nginx/conf.d/  
+      - ./webserver/static/jenkins/dist/:/usr/share/nginx/html/ 
